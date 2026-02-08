@@ -60,6 +60,9 @@ importers:
 
   apps/Frontend:
     dependencies:
+      '@hooli/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       '@stripe/react-stripe-js':
         specifier: ^5.6.0
         version: 5.6.0(@stripe/stripe-js@8.7.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
