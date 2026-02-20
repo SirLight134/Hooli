@@ -8,11 +8,11 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 // Basic route
-app.get('/api/health', (req, res) => {
+app.get('/health', (req, res) => {
     res.json({ status: 'ok', message: 'Hooli Backend is running' });
 });
 // Example API routes
-app.get('/api/products', (req, res) => {
+app.get('/products', (req, res) => {
     res.json({ products: [] });
 });
 // Start server
