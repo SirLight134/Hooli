@@ -2,9 +2,10 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import apiRoutes from './routes'; // TODO: Uncomment when routes are ready
-
+import dbConnect from './config/database';
+import mongoose from 'mongoose';
 dotenv.config();
-
+dbConnect();
 const app = express();
 
 // ============================================
@@ -33,9 +34,18 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 // 4. Health Check Route
 // ============================================
 app.get('/health', (req: Request, res: Response) => {
-  res.json({ 
-    status: 'ok', 
-    timestamp: new Date().toISOString() 
+  const isHealthy = mongoose.connection.readyState === 1;
+  const statusCode = isHealthy ? 200 : 503;
+
+  res.status(statusCode).json({
+    status: statusCode,
+    timestamp: new Date().toISOString(),
+    db: {
+      connected: isHealthy,
+      host: mongoose.connection.host,
+      port: mongoose.connection.port,
+      name: mongoose.connection.name,
+    }
   });
 });
 
@@ -48,7 +58,7 @@ app.use('/api', apiRoutes);
 // 6. 404 Handler (Must come after all routes)
 // ============================================
 app.use((req: Request, res: Response) => {
-  res.status(404).json({ 
+  res.status(404).json({
     error: 'Route not found',
     path: req.path,
     method: req.method
@@ -60,8 +70,8 @@ app.use((req: Request, res: Response) => {
 // ============================================
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error('Error:', err.stack);
-  
-  res.status(500).json({ 
+
+  res.status(500).json({
     error: 'Internal server error',
     message: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong',
     ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
