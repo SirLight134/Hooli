@@ -2,15 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { verifyToken } from "../utils/jwt.util.js";
 import User, { IUser } from "../models/User.model.js";
 
-// Extend Express Request interface to include user
-declare global {
-    namespace Express {
-        interface Request {
-            user?: IUser;
-        }
-    }
-}
-
 export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
     try {
         let token;
@@ -35,6 +26,7 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
 
         // Attach user to request object
         req.user = currentUser;
+        console.log("1.authenticate middleware ran")
         next();
     } catch (error: any) {
         return res.status(401).json({ message: "Not authorized to access this route. Invalid or expired token." });

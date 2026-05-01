@@ -81,7 +81,7 @@ import jwt from "jsonwebtoken";
 
 export const registerService = async (userData: Partial<IUser>) => {
     try {
-        const { name, email, password } = userData;
+        const { name, email, password, role } = userData;
 
         if (!name || !email || !password) {
             throw new Error("All fields are required")
@@ -95,9 +95,11 @@ export const registerService = async (userData: Partial<IUser>) => {
         const user = await User.create({
             name,
             email,
-            password
+            password,
+            ...(role && { role })
         });
-        return { message: "User registered successfully" }
+        const token = await user.generateToken();
+        return { message: "User registered successfully", token: token }
 
     } catch (error: any) {
         console.log(error);
@@ -145,3 +147,4 @@ export const refreshService = async (userId: string) => {
 export const logoutService = async (userId: string) => {
     return { message: "User logged out successfully" }
 }
+

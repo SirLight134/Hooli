@@ -7,7 +7,7 @@ export interface IUser {
     password: string;
     comparePassword: (password: string) => Promise<boolean>;
     generateToken: () => Promise<string>;
-    role: "user" | "admin";
+    role: "user" | "admin" | "seller" | "buyer";
     profile: {
         firstName: string;
         lastName: string;
@@ -36,7 +36,7 @@ const userSchema = new mongoose.Schema<IUser>({
     },
     role: {
         type: String,
-        enum: ['user', 'admin'],
+        enum: ['user', 'admin', 'seller', 'buyer'],
         default: 'user',
         index: true
     },

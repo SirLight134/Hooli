@@ -1,10 +1,9 @@
-import { Request, Response } from "express";
 import { Router } from "express";
+import { requireAdmin } from "../middlewares/role.middleware.js";
+import { createProductController } from "../controllers/product.controller.js";
 
 const router = Router();
 
-router.get('/admin', (req: Request, res: Response) => {
-    res.json({ message: 'Admin routes' });
-});
 
+router.post('/product', requireAdmin, createProductController)
 export default router;

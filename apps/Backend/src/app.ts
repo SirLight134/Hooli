@@ -2,6 +2,9 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import apiRoutes from './routes'; // TODO: Uncomment when routes are ready
+import authRoutes from './routes/auth.routes.js';
+import productRoutes from './routes/product.routes.js';
+import orderRoutes from './routes/order.routes.js';
 import dbConnect from './config/database';
 import mongoose from 'mongoose';
 dotenv.config();
@@ -52,7 +55,10 @@ app.get('/health', (req: Request, res: Response) => {
 // ============================================
 // 5. API Routes (Commented out for now)
 // ============================================
-app.use('/api', apiRoutes);
+app.use('/auth', authRoutes);
+app.use('/products', productRoutes);
+app.use('/orders', orderRoutes);
+// app.use('/api', apiRoutes);
 
 // ============================================
 // 6. 404 Handler (Must come after all routes)
