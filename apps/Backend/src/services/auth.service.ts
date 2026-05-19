@@ -78,6 +78,7 @@
 
 import User, { IUser } from "../models/User.model.js";
 import jwt from "jsonwebtoken";
+import logger from "../utils/logger.js";
 
 export const registerService = async (userData: Partial<IUser>) => {
     try {
@@ -102,7 +103,7 @@ export const registerService = async (userData: Partial<IUser>) => {
         return { message: "User registered successfully", token: token }
 
     } catch (error: any) {
-        console.log(error);
+        logger.error(error, 'Register service failed');
         throw new Error(error.message)
     }
 }
@@ -128,7 +129,7 @@ export const loginService = async (email: string, password: string) => {
         return { message: "User logged in successfully", token }
 
     } catch (error: any) {
-        console.log(error);
+        logger.error(error, 'Login service failed');
         throw new Error(error.message)
     }
 }

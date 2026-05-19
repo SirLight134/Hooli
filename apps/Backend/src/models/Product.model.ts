@@ -28,9 +28,7 @@ const ProductSchema: Schema = new Schema({
     tags: { type: [String], default: [] },
 }
     , {
-        timestamps: true,
-        toJSON: { virtuals: true },
-        toObject: { virtuals: true }
+        timestamps: true
     }
 );
 

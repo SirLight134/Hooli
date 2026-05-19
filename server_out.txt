@@ -1,0 +1,53 @@
+
+> @hooli/backend@1.0.0 dev C:\Users\Ibrahim Saad\Documents\Projects\Hooli\apps\Backend
+> tsx watch src/server.ts
+
+[dotenv@17.2.3] injecting env (6) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+[22:11:11.400] [32mINFO[39m (11956): [36mServer running on http://localhost:3000[39m
+[22:11:11.401] [32mINFO[39m (11956): [36mHealth check: http://localhost:3000/health[39m
+[22:11:11.401] [32mINFO[39m (11956): [36mAPI routes: http://localhost:3000/api[39m
+[22:11:14.939] [32mINFO[39m (11956): [36mrequest errored[39m
+    [35mreq[39m: {
+      "id": 1,
+      "method": "GET",
+      "url": "/health",
+      "query": {},
+      "params": {},
+      "headers": {
+        "user-agent": "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.19041.6456",
+        "host": "localhost:3000",
+        "connection": "Keep-Alive"
+      },
+      "remoteAddress": "::1",
+      "remotePort": 53811
+    }
+    [35mres[39m: {
+      "statusCode": 503,
+      "headers": {
+        "x-powered-by": "Express",
+        "access-control-allow-origin": "http://localhost:3000",
+        "vary": "Origin",
+        "access-control-allow-credentials": "true",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "78",
+        "etag": "W/\"4e-pWerOfXTLl+DMyyDfCz8Gxtkqos\""
+      }
+    }
+    [35mresponseTime[39m: 6
+    err: {
+      "type": "Error",
+      "message": "failed with status code 503",
+      "stack":
+          Error: failed with status code 503
+              at onResFinished (C:\Users\Ibrahim Saad\Documents\Projects\Hooli\node_modules\.pnpm\pino-http@11.0.0\node_modules\pino-http\logger.js:115:39)
+              at ServerResponse.onResponseComplete (C:\Users\Ibrahim Saad\Documents\Projects\Hooli\node_modules\.pnpm\pino-http@11.0.0\node_modules\pino-http\logger.js:178:14)
+              at ServerResponse.emit (node:events:521:24)
+              at onFinish (node:_http_outgoing:1026:10)
+              at callback (node:internal/streams/writable:764:21)
+              at afterWrite (node:internal/streams/writable:708:5)
+              at afterWriteTick (node:internal/streams/writable:694:10)
+              at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+    }
+
+C:\Users\Ibrahim Saad\Documents\Projects\Hooli>

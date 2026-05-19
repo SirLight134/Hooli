@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import Product from "../models/Product.model";
+import logger from "../utils/logger.js";
 
 export const isOwner = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -13,7 +14,7 @@ export const isOwner = async (req: Request, res: Response, next: NextFunction) =
         }
         next();
     } catch (error: any) {
-        console.log(error);
+        logger.error(error, 'Owner check failed');
         res.status(500).json({ message: error.message });
     }
 }

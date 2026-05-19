@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { authenticate } from "./auth.middleware.js";
+import logger from "../utils/logger.js";
 
 export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
     if (req.user?.role !== 'admin') {
@@ -34,7 +35,7 @@ export const hasAnyRole = (roles: Array<"user" | "admin" | "seller" | "buyer">) 
         if (!roles.includes(req.user?.role!)) {
             return res.status(403).json({ message: "Not authorized to access this route. Role required." });
         }
-        console.log("2.hasAnyRole middleware ran")
+        logger.debug({ roles }, 'hasAnyRole middleware ran');
         next();
     }
 };

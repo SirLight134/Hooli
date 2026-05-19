@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import logger from "../utils/logger.js";
 dotenv.config();
 
 const dbConnect = async (retries = 5, delay = 5000) => {
@@ -11,49 +12,47 @@ const dbConnect = async (retries = 5, delay = 5000) => {
                 serverSelectionTimeoutMS: 5000,
                 socketTimeoutMS: 45000,
             });
-            console.log(`MongoDB Connected: ${conn.connection.host}`);
-            return conn; // Successfully connected, exit the loop
+            logger.info(`MongoDB Connected: ${conn.connection.host}`);
+            return conn;
         } catch (error: any) {
-            console.error(`MongoDB connection attempt failed: ${error.message}`);
+            logger.error(error, `MongoDB connection attempt failed`);
             retries -= 1;
-            console.log(`Retries left: ${retries}`);
+            logger.warn(`Retries left: ${retries}`);
             
             if (retries === 0) {
-                console.error("Could not connect to MongoDB after maximum retries. Exiting...");
+                logger.error("Could not connect to MongoDB after maximum retries. Exiting...");
                 process.exit(1);
             }
             
-            // Wait for 'delay' milliseconds before trying again
-            console.log(`Waiting ${delay / 1000} seconds before retrying...`);
+            logger.info(`Waiting ${delay / 1000} seconds before retrying...`);
             await new Promise(resolve => setTimeout(resolve, delay));
         }
     }
 };
 
-// Mongoose automatically provides a connection object that we can listen to
 mongoose.connection.on('open', () => {
-    console.log('MongoDB Connection Pool Opened');
+    logger.info('MongoDB Connection Pool Opened');
 });
 
 mongoose.connection.on('error', (error: any) => {
-    console.error(`MongoDB Connection Error: ${error.message}`)
+    logger.error(error, 'MongoDB Connection Error')
 });
 
 mongoose.connection.on('close', () => {
-    console.log('MongoDB Connection Closed');
+    logger.info('MongoDB Connection Closed');
 });
 
 mongoose.connection.on('reconnected', () => {
-    console.log('MongoDB Connection Reconnected');
+    logger.info('MongoDB Connection Reconnected');
 });
 
 const gracefulShutdown = async (signal: string, callback: () => void) => {
     try {
         await mongoose.connection.close();
-        console.log(`Mongoose disconnected through ${signal}`);
+        logger.info(`Mongoose disconnected through ${signal}`);
         callback();
     } catch (err) {
-        console.error('Error closing mongoose connection:', err);
+        logger.error(err, 'Error closing mongoose connection');
         callback();
     }
 }

@@ -1,13 +1,14 @@
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
+import pinoHttp from 'pino-http';
 import apiRoutes from './routes'; // TODO: Uncomment when routes are ready
 import authRoutes from './routes/auth.routes.js';
 import productRoutes from './routes/product.routes.js';
 import orderRoutes from './routes/order.routes.js';
 import dbConnect from './config/database';
 import mongoose from 'mongoose';
-dotenv.config();
+import logger from './utils/logger.js';
+import stripeRoutes from './routes/stripe.routes.js';
 dbConnect();
 const app = express();
 
@@ -26,12 +27,9 @@ app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
 // ============================================
-// 3. Request Logging (Optional but useful)
+// 3. Request Logging
 // ============================================
-app.use((req: Request, res: Response, next: NextFunction) => {
-  console.log(`${req.method} ${req.path}`);
-  next();
-});
+app.use(pinoHttp({ logger }));
 
 // ============================================
 // 4. Health Check Route
@@ -58,6 +56,7 @@ app.get('/health', (req: Request, res: Response) => {
 app.use('/auth', authRoutes);
 app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
+app.use('/stripe', stripeRoutes);
 // app.use('/api', apiRoutes);
 
 // ============================================
@@ -75,7 +74,7 @@ app.use((req: Request, res: Response) => {
 // 7. Global Error Handler (Must be last)
 // ============================================
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error('Error:', err.stack);
+  logger.error({ err, path: req.path, method: req.method }, 'Unhandled error');
 
   res.status(500).json({
     error: 'Internal server error',

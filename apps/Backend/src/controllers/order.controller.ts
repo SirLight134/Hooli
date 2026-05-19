@@ -1,32 +1,33 @@
 import { Request, Response } from "express";
+import logger from "../utils/logger.js";
 
 
 export const createOrderController = (req: Request, res: Response) => {
-    console.log("1.createOrderController");
+    logger.debug('Create order endpoint called');
     res.json({ message: 'Create order routes' });
 };
 
 export const cancelOrderController = (req: Request, res: Response) => {
-    console.log("1.cancelOrderController");
+    logger.debug('Cancel order endpoint called');
     res.json({ message: 'Cancel order routes' });
 };
 
 export const getOrdersController = (req: Request, res: Response) => {
-    console.log("1.getOrdersController");
+    logger.debug('Get orders endpoint called');
     res.json({ message: 'Get orders routes' });
 };
 
 export const getOrderController = (req: Request, res: Response) => {
-    console.log("1.getOrderController");
+    logger.debug('Get order endpoint called');
     res.json({ message: 'Get order routes' });
 };
 
 export const updateOrderController = (req: Request, res: Response) => {
-    console.log("1.updateOrderController");
+    logger.debug('Update order endpoint called');
     res.json({ message: 'Update order routes' });
 };
 
 export const deleteOrderController = (req: Request, res: Response) => {
-    console.log("1.deleteOrderController");
+    logger.debug('Delete order endpoint called');
     res.json({ message: 'Delete order routes' });
 };  
