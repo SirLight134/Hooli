@@ -6,7 +6,7 @@ import { webhookController } from "../controllers/stripe.controller";
 const router = Router();
 
 
-router.post('/api/webhook/stripe', webhookController)
+router.post('/webhook', webhookController)
 
 
 export default router;

@@ -5,6 +5,7 @@ import apiRoutes from './routes'; // TODO: Uncomment when routes are ready
 import authRoutes from './routes/auth.routes.js';
 import productRoutes from './routes/product.routes.js';
 import orderRoutes from './routes/order.routes.js';
+import stripeWebhookRoutes from './routes/stripe.webhook.routes.js';
 import dbConnect from './config/database';
 import mongoose from 'mongoose';
 import logger from './utils/logger.js';
@@ -21,11 +22,11 @@ app.use(cors({
 }));
 
 // ============================================
-// 2. Body Parsers
+// 2. Body Parsers — webhook route MUST use raw body before global json parser
 // ============================================
-app.use(express.json()); // Parse JSON bodies
+app.use('/stripe-webhook', express.raw({ type: 'application/json' }), stripeWebhookRoutes);
+app.use(express.json()); // Parse JSON bodies for all other routes
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
-
 // ============================================
 // 3. Request Logging
 // ============================================

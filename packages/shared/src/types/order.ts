@@ -2,6 +2,7 @@
 
 export enum OrderStatus {
     PENDING = 'PENDING',
+    PROCESSING = 'PROCESSING',
     PAID = 'PAID',
     SHIPPED = 'SHIPPED',
     DELIVERED = 'DELIVERED',
@@ -30,3 +31,4 @@ export type Address = {
     country: string;
     zipCode: string;
 }
+
