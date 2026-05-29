@@ -5,7 +5,7 @@ dotenv.config();
 
 const logsDir = path.resolve('logs');
 
-const logLevel = (process.env.LOG_LEVEL || 'info').toLowerCase();
+const logLevel = (process.env.LOG_LEVEL || 'debug').toLowerCase();
 
 const transport = pino.transport({
   targets: [

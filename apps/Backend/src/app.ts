@@ -10,6 +10,9 @@ import dbConnect from './config/database';
 import mongoose from 'mongoose';
 import logger from './utils/logger.js';
 import stripeRoutes from './routes/stripe.routes.js';
+import { errorHandler, notFound } from './middlewares/errorHandler.js';
+
+
 dbConnect();
 const app = express();
 
@@ -63,25 +66,11 @@ app.use('/stripe', stripeRoutes);
 // ============================================
 // 6. 404 Handler (Must come after all routes)
 // ============================================
-app.use((req: Request, res: Response) => {
-  res.status(404).json({
-    error: 'Route not found',
-    path: req.path,
-    method: req.method
-  });
-});
+app.use(notFound);
 
 // ============================================
 // 7. Global Error Handler (Must be last)
 // ============================================
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  logger.error({ err, path: req.path, method: req.method }, 'Unhandled error');
-
-  res.status(500).json({
-    error: 'Internal server error',
-    message: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong',
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
-  });
-});
+app.use(errorHandler);
 
 export default app;
