@@ -1,7 +1,9 @@
+import mongoose from "mongoose";
 import Order from "../models/Order.model.js";
 import logger from "../utils/logger.js";
 import { OrderStatus } from "@hooli/shared";
 import Product from "../models/Product.model.js";
+
 export const createOrderService = async (checkoutSession: any, lineItems: any[]) => {
     try {
         const existingOrder = await Order.findOne({ stripeSessionId: checkoutSession.id });
@@ -10,31 +12,41 @@ export const createOrderService = async (checkoutSession: any, lineItems: any[])
             return;
         }
 
-        const { orderId, userId } = checkoutSession.metadata || { orderId: "", userId: "" };
+        const { order_id: orderId, user_id: userId, products: productsMeta } = checkoutSession.metadata || {};
         const totalAmount = checkoutSession.amount_total / 100;
 
-        const items = lineItems.map((item: any) => ({
-            productId: item.price.product,
-            quantity: item.quantity,
-            price: item.price.unit_amount / 100,
-        }));
+        let items: Array<{ productId: string; quantity: number; price?: number }> = [];
+        if (productsMeta) {
+            try {
+                items = JSON.parse(productsMeta);
+            } catch (err) {
+                logger.error(err, 'Failed to parse products metadata JSON');
+            }
+        }
 
-        const newOrder = await Order.create({
-            stripeSessionId: checkoutSession.id,
-            buyer: userId,
-            total: totalAmount,
-            status: OrderStatus.PAID,
-        });
+        // Fallback to lineItems if metadata is missing or empty
+        if (!items || items.length === 0) {
+            items = lineItems.map((item: any) => ({
+                productId: item.price.product,
+                quantity: item.quantity,
+                price: item.price.unit_amount / 100,
+            }));
+        }
 
-        logger.info({ orderId: newOrder._id }, 'Order created successfully');
-
+        const productsList: any[] = [];
         if (items.length > 0) {
             for (const item of items) {
-                const product = await Product.findById(item.productId);
+                const isObjectId = mongoose.Types.ObjectId.isValid(item.productId);
+                let product = null;
+                if (isObjectId) {
+                    product = await Product.findById(item.productId);
+                }
+
                 if (!product) {
                     logger.error({ productId: item.productId }, 'Product not found');
                     continue;
                 }
+
                 if (product.stock < item.quantity) {
                     logger.error({ productId: item.productId }, 'Product is out of stock');
                     continue;
@@ -42,9 +54,33 @@ export const createOrderService = async (checkoutSession: any, lineItems: any[])
                 product.stock -= item.quantity;
                 await product.save();
                 logger.info({ productId: item.productId }, 'Product stock updated');
+
+                productsList.push({
+                    product: product._id,
+                    quantity: item.quantity,
+                    priceAtPurchase: item.price || product.price,
+                });
             }
         }
 
+        const shippingDetails = checkoutSession.shipping_details;
+        const shippingAddress = {
+            street: shippingDetails?.address?.line1 || "Unknown Street",
+            city: shippingDetails?.address?.city || "Unknown City",
+            country: shippingDetails?.address?.country || "Unknown Country",
+            zipCode: shippingDetails?.address?.postal_code || "00000",
+        };
+
+        const newOrder = await Order.create({
+            stripeSessionId: checkoutSession.id,
+            buyer: mongoose.Types.ObjectId.isValid(userId) ? userId : new mongoose.Types.ObjectId(),
+            total: totalAmount,
+            status: OrderStatus.PAID,
+            products: productsList,
+            shippingAddress,
+        });
+
+        logger.info({ orderId: newOrder._id }, 'Order created successfully');
         return newOrder;
     }
     catch (error) {

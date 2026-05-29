@@ -2,5 +2,3 @@
 > @hooli/backend@1.0.0 build C:\Users\Ibrahim Saad\Documents\Projects\Hooli\apps\Backend
 > tsc
 
-src/models/Order.model.ts(3,29): error TS2307: Cannot find module '@/../packages/shared/src/types/order' or its corresponding type declarations.
- ELIFECYCLE  Command failed with exit code 2.

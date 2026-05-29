@@ -3,6 +3,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 import Product, { IProduct } from "../models/Product.model";
 
 export const createCheckoutSession = async (products: Array<{
+    productId?: string;
     price_data: {
         currency: string;
         product_data: {
@@ -23,7 +24,9 @@ export const createCheckoutSession = async (products: Array<{
 
     const session = await stripe.checkout.sessions.create({
         mode: "payment",
-
+        shipping_address_collection: {
+            allowed_countries: ['US', 'CA', 'GB', 'FR', 'DE', 'EG', 'SA', 'AE'],
+        },
         line_items: products.map((item) => ({
             price_data: {
                 currency: item.price_data.currency,
@@ -36,8 +39,9 @@ export const createCheckoutSession = async (products: Array<{
             quantity: item.quantity,
         })),
         metadata: {
-            order_id: orderId,
-            user_id: userId,
+            order_id: orderId || "",
+            user_id: userId || "",
+            products: JSON.stringify(products.map(p => ({ productId: p.productId, quantity: p.quantity }))),
             summary: productSummary.substring(0, 500),
         },
         success_url: `${process.env.CLIENT_URL}/checkout?session_id={CHECKOUT_SESSION_ID}`,

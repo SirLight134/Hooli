@@ -3,8 +3,9 @@ import logger from "../utils/logger.js";
 import Order from "../models/Order.model.js";
 import { createOrderService, updateOrderStatusService } from "../services/order.service.js";
 
-export const createOrderController = async (checkoutSession: any, lineItems: any[]) => {
-    await createOrderService(checkoutSession, lineItems);
+export const createOrderController = async (req: Request, res: Response) => {
+    logger.debug('Create order endpoint called');
+    res.json({ message: 'Create order routes' });
 };
 
 export const cancelOrderController = (req: Request, res: Response) => {

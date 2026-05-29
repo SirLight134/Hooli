@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { createCheckoutSession } from "../services/stripe.service";
 import Product from "../models/Product.model";
 import logger from "../utils/logger.js";
-import { createOrderController } from "../controllers/order.controller"
+import { createOrderService } from "../services/order.service.js";
 
 import Stripe from "stripe";
 
@@ -22,7 +22,7 @@ export const webhookController = async (req: Request, res: Response) => {
             case "checkout.session.completed":
                 const checkoutSession = event.data.object as Stripe.Checkout.Session;
                 const lineItems = await stripe.checkout.sessions.listLineItems(checkoutSession.id);
-                await createOrderController(checkoutSession, lineItems.data);
+                await createOrderService(checkoutSession, lineItems.data);
                 logger.info(`Order created for session: ${checkoutSession.id}`);
                 res.status(200).json({ message: "Order created successfully" });
                 break;
