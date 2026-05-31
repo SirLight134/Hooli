@@ -1,15 +1,18 @@
 import { Router } from "express";
-import { loginController, registerController, logoutController, refreshController } from "../controllers/auth.controller.js";
+import { loginController, registerController, logoutController, refreshController, meController } from "../controllers/auth.controller.js";
 import { authenticate } from "../middlewares/auth.middleware.js";
 import { validate } from "../middlewares/validate.js";
-import { loginSchema } from "@hooli/shared";
-import { createUserSchema } from "@hooli/shared";
+import { authRateLimiter, apiRateLimiter } from "../middlewares/rateLimit.js";
+import { createUserSchema, loginSchema, registerSchema } from "@hooli/shared";
+
+
 const router = Router();
 
-router.post('/login', validate(loginSchema, 'body'), loginController)
+router.post('/login', authRateLimiter, validate(loginSchema, 'body'), loginController)
 router.post('/logout', authenticate, logoutController)
-router.post('/register', validate(createUserSchema, 'body'), registerController)
-router.post('/refresh', authenticate, refreshController)
+router.post('/register', authRateLimiter, validate(registerSchema, 'body'), registerController)
+router.post('/refresh', apiRateLimiter, authenticate, refreshController)
+router.get('/me', authenticate, meController)
 
 
-export default router;  
+export default router;

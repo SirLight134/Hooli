@@ -2,12 +2,13 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import { signToken } from "../utils/jwt.util.js";
 export interface IUser {
+    _id: string;
     name: string;
     email: string;
     password: string;
     comparePassword: (password: string) => Promise<boolean>;
     generateToken: () => Promise<string>;
-    role: "user" | "admin" | "seller" | "buyer";
+    role: "admin" | "seller" | "buyer";
     profile: {
         firstName: string;
         lastName: string;
@@ -36,8 +37,8 @@ const userSchema = new mongoose.Schema<IUser>({
     },
     role: {
         type: String,
-        enum: ['user', 'admin', 'seller', 'buyer'],
-        default: 'user',
+        enum: ['admin', 'seller', 'buyer'],
+        default: 'buyer',
         index: true
     },
     profile: {

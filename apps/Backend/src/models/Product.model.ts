@@ -1,6 +1,4 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { productSchema } from "../../../../packages/shared/dist";
-
 export interface IProduct extends Document {
     name: string;
     description: string;

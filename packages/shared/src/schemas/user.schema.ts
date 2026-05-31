@@ -16,6 +16,8 @@ export const createUserSchema = userSchema.extend({
     password: z.string().min(6),
     confirmPassword: z.string().min(6),
 
+}).refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
 })
 
 export type CreateUserInput = z.infer<typeof createUserSchema>
@@ -29,6 +31,7 @@ export const registerSchema = z.object({
     email: z.string().email(),
     password: z.string().min(6),
     name: z.string().min(3),
+    role: z.nativeEnum(Role).optional(),
 })
 
 export type loginSchema = z.infer<typeof loginSchema>

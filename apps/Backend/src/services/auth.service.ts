@@ -100,7 +100,7 @@ export const registerService = async (userData: Partial<IUser>) => {
             ...(role && { role })
         });
         const token = await user.generateToken();
-        return { message: "User registered successfully", token: token }
+        return { message: "User registered successfully", token: token, user }
 
     } catch (error: any) {
         logger.error(error, 'Register service failed');
@@ -126,7 +126,7 @@ export const loginService = async (email: string, password: string) => {
         }
 
         const token = await user.generateToken();
-        return { message: "User logged in successfully", token }
+        return { message: "User logged in successfully", token, user }
 
     } catch (error: any) {
         logger.error(error, 'Login service failed');

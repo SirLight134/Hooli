@@ -25,8 +25,8 @@ export const registerController = async (req: Request, res: Response) => {
 
 export const refreshController = async (req: Request, res: Response) => {
     try {
-        const userId = req.body.userId;
-        const result = await refreshService(userId);
+        const userId = req.user?._id;
+        const result = await refreshService(userId!);
         res.status(200).json(result);
     } catch (error: any) {
         res.status(400).json({ message: error.message });
@@ -35,9 +35,18 @@ export const refreshController = async (req: Request, res: Response) => {
 
 export const logoutController = async (req: Request, res: Response) => {
     try {
-        const userId = req.body.userId;
-        const result = await logoutService(userId);
+        const userId = req.user?._id;
+        const result = await logoutService(userId!);
         res.status(200).json(result);
+    } catch (error: any) {
+        res.status(400).json({ message: error.message });
+    }
+};
+
+export const meController = async (req: Request, res: Response) => {
+    try {
+        const user = req.user;
+        res.status(200).json({ user });
     } catch (error: any) {
         res.status(400).json({ message: error.message });
     }

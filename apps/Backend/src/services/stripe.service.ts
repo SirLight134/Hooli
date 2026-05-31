@@ -41,7 +41,7 @@ export const createCheckoutSession = async (products: Array<{
         metadata: {
             order_id: orderId || "",
             user_id: userId || "",
-            products: JSON.stringify(products.map(p => ({ productId: p.productId, quantity: p.quantity }))),
+            products: JSON.stringify(products.map(p => ({ productId: p.productId, quantity: p.quantity, price: p.price_data.unit_amount / 100 }))),
             summary: productSummary.substring(0, 500),
         },
         success_url: `${process.env.CLIENT_URL}/checkout?session_id={CHECKOUT_SESSION_ID}`,

@@ -33,6 +33,13 @@ export const createOrderService = async (checkoutSession: any, lineItems: any[])
             }));
         }
 
+        // Build lineItems price lookup for fallback
+        const lineItemPriceMap: Record<string, number> = {};
+        for (const li of lineItems) {
+            const pid = li.price.product;
+            lineItemPriceMap[pid] = li.price.unit_amount / 100;
+        }
+
         const productsList: any[] = [];
         if (items.length > 0) {
             for (const item of items) {
@@ -43,7 +50,14 @@ export const createOrderService = async (checkoutSession: any, lineItems: any[])
                 }
 
                 if (!product) {
-                    logger.error({ productId: item.productId }, 'Product not found');
+                    const linePrice = lineItemPriceMap[item.productId];
+                    const fallbackPrice = item.price || linePrice || 0;
+                    logger.warn({ productId: item.productId, price: fallbackPrice }, 'Product not found in DB, storing without reference');
+                    productsList.push({
+                        product: new mongoose.Types.ObjectId(),
+                        quantity: item.quantity,
+                        priceAtPurchase: fallbackPrice,
+                    });
                     continue;
                 }
 
@@ -85,6 +99,7 @@ export const createOrderService = async (checkoutSession: any, lineItems: any[])
     }
     catch (error) {
         logger.error(error, 'Failed to create order');
+        throw error;
     }
 };
 
@@ -94,7 +109,7 @@ export const updateOrderStatusService = async (orderId: string, status: OrderSta
         const order = await Order.findById(orderId);
         if (!order) {
             logger.error({ orderId }, 'Order not found');
-            return;
+            throw new Error(`Order not found: ${orderId}`);
         }
         order.status = status;
         await order.save();
@@ -102,5 +117,6 @@ export const updateOrderStatusService = async (orderId: string, status: OrderSta
         return order;
     } catch (error) {
         logger.error(error, 'Failed to update order status');
+        throw error;
     }
 }
