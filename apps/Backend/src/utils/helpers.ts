@@ -1,6 +1,5 @@
 /**
  * Converts text string into a URL-friendly slug.
- * Example: "Wireless Headphones Pro!" => "wireless-headphones-pro"
  */
 export const generateSlug = (text: string): string => {
     return text
@@ -24,7 +23,6 @@ export const paginate = (page: number = 1, limit: number = 10) => {
 
 /**
  * Generates a unique, readable order reference number.
- * Example: "ORD-1721612400000-4821"
  */
 export const generateOrderNumber = (): string => {
     const timestamp = Date.now();
