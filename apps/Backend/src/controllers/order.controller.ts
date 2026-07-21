@@ -21,7 +21,7 @@ export const createOrderController = async (req: Request, res: Response) => {
         });
         res.status(201).json(order);
     } catch (error: any) {
-        res.status(400).json({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 
@@ -37,7 +37,7 @@ export const cancelOrderController = async (req: Request, res: Response) => {
         await order.save();
         res.json(order);
     } catch (error: any) {
-        res.status(400).json({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 
@@ -51,7 +51,7 @@ export const getOrdersController = async (req: Request, res: Response) => {
             .sort({ createdAt: -1 });
         res.json(orders);
     } catch (error: any) {
-        res.status(400).json({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 
@@ -71,7 +71,7 @@ export const getOrderController = async (req: Request, res: Response) => {
         }
         res.json(order);
     } catch (error: any) {
-        res.status(400).json({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 
@@ -81,7 +81,7 @@ export const updateOrderController = async (req: Request, res: Response) => {
         const order = await updateOrderStatusService(req.params.id, req.body.status);
         res.json(order);
     } catch (error: any) {
-        res.status(400).json({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 
@@ -95,7 +95,7 @@ export const deleteOrderController = async (req: Request, res: Response) => {
         }
         res.json({ message: 'Order deleted' });
     } catch (error: any) {
-        res.status(400).json({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 

@@ -1,7 +1,7 @@
 
 
 export type Product = {
-    title: string;
+    name: string;
     description: string;
     price: number;
     stock: number;
@@ -16,4 +16,4 @@ export type CreateProductInput = Omit<Product, 'seller' | 'slug'>
 
 
 //Makes all creation fields optional.
-export type UpdaeProductInput = Partial<CreateProductInput>
+export type UpdateProductInput = Partial<CreateProductInput>
