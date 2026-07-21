@@ -5,6 +5,7 @@ export type { IOrder } from '../models/Order.model.js';
 
 // Step 2: Re-export custom request types
 export type { AuthRequest } from './express.d.js';
+export type * from './order.types.js';
 
 // Step 3: Export backend utility types
 export interface ApiResponse<T = unknown> {
