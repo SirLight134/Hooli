@@ -1,7 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import pinoHttp from 'pino-http';
-import apiRoutes from './routes'; // TODO: Uncomment when routes are ready
 import authRoutes from './routes/auth.routes.js';
 import productRoutes from './routes/product.routes.js';
 import orderRoutes from './routes/order.routes.js';
@@ -59,14 +58,13 @@ app.get('/health', (req: Request, res: Response) => {
 });
 
 // ============================================
-// 5. API Routes (Commented out for now)
+// 5. API Routes
 // ============================================
 app.use(apiRateLimiter);
 app.use('/auth', authRoutes);
 app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
 app.use('/stripe', stripeRoutes);
-// app.use('/api', apiRoutes);
 
 // ============================================
 // 6. 404 Handler (Must come after all routes)

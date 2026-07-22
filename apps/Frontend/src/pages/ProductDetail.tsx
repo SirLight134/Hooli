@@ -1,16 +1,20 @@
 import { useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import { products } from "../data/products"
 import { useCartStore } from "../store/cartStore"
+import { useProduct } from "../hooks/useProducts"
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const product = products.find((p) => p._id === id)
   const addItem = useCartStore((s) => s.addItem)
   const [quantity, setQuantity] = useState(1)
+  const { data: product, isLoading, error } = useProduct(id || "")
 
-  if (!product) {
+  if (isLoading) {
+    return <div className="text-center py-10">Loading product details...</div>
+  }
+
+  if (error || !product) {
     return <div className="text-center py-10 text-red-500">Product not found</div>
   }
 

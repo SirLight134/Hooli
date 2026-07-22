@@ -19,9 +19,9 @@ export const createOrderController = async (req: Request, res: Response) => {
             status: OrderStatus.PENDING,
             shippingAddress,
         });
-        res.status(201).json(order);
+        return res.status(201).json(order);
     } catch (error: any) {
-        res.status(400).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 };
 
@@ -30,14 +30,13 @@ export const cancelOrderController = async (req: Request, res: Response) => {
         logger.debug('Cancel order endpoint called');
         const order = await Order.findById(req.body.orderId);
         if (!order) {
-            res.status(404).json({ message: 'Order not found' });
-            return;
+            return res.status(404).json({ message: 'Order not found' });
         }
         order.status = OrderStatus.CANCELLED;
         await order.save();
-        res.json(order);
+        return res.json(order);
     } catch (error: any) {
-        res.status(400).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 };
 
@@ -49,9 +48,9 @@ export const getOrdersController = async (req: Request, res: Response) => {
         const orders = await Order.find(filter)
             .populate('products.product', 'name price images')
             .sort({ createdAt: -1 });
-        res.json(orders);
+        return res.json(orders);
     } catch (error: any) {
-        res.status(400).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 };
 
@@ -61,17 +60,15 @@ export const getOrderController = async (req: Request, res: Response) => {
         const order = await Order.findById(req.params.id)
             .populate('products.product', 'name price images');
         if (!order) {
-            res.status(404).json({ message: 'Order not found' });
-            return;
+            return res.status(404).json({ message: 'Order not found' });
         }
         const user = req.user!;
         if (user.role !== 'admin' && order.buyer.toString() !== user._id.toString()) {
-            res.status(403).json({ message: 'Not authorized' });
-            return;
+            return res.status(403).json({ message: 'Not authorized' });
         }
-        res.json(order);
+        return res.json(order);
     } catch (error: any) {
-        res.status(400).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 };
 
@@ -79,9 +76,9 @@ export const updateOrderController = async (req: Request, res: Response) => {
     try {
         logger.debug('Update order endpoint called');
         const order = await updateOrderStatusService(req.params.id, req.body.status);
-        res.json(order);
+        return res.json(order);
     } catch (error: any) {
-        res.status(400).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 };
 
@@ -90,12 +87,10 @@ export const deleteOrderController = async (req: Request, res: Response) => {
         logger.debug('Delete order endpoint called');
         const order = await Order.findByIdAndDelete(req.params.id);
         if (!order) {
-            res.status(404).json({ message: 'Order not found' });
-            return;
+            return res.status(404).json({ message: 'Order not found' });
         }
-        res.json({ message: 'Order deleted' });
+        return res.json({ message: 'Order deleted' });
     } catch (error: any) {
-        res.status(400).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 };
-
