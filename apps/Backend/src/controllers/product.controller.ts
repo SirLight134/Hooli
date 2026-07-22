@@ -28,8 +28,8 @@ export const getProductsController = async (req: Request, res: Response) => {
         logger.info({ count: products.length }, 'Products fetched');
         res.status(200).json({ message: "Products fetched successfully", products });
     } catch (error: any) {
-        logger.error(error, 'Failed to fetch products');
-        res.status(500).json({ message: error.message });
+
+        res.status(500).json({ message: error.message }); logger.error(error, 'Failed to fetch products');
     }
 };
 

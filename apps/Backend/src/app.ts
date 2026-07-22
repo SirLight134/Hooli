@@ -15,6 +15,8 @@ import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
 import hpp from 'hpp';
 import { apiRateLimiter } from './middlewares/rateLimit.js';
+import sellerRoutes from './routes/seller.routes.js';
+import adminRoutes from './routes/admin.routes.js';
 dbConnect();
 
 const app = express();
@@ -65,7 +67,8 @@ app.use('/auth', authRoutes);
 app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
 app.use('/stripe', stripeRoutes);
-
+app.use('/seller', sellerRoutes);
+app.use('/admin', adminRoutes);
 // ============================================
 // 6. 404 Handler (Must come after all routes)
 // ============================================

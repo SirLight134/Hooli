@@ -16,7 +16,6 @@ const router = Router();
 router.post('/create-order', apiRateLimiter, validate(createOrderSchema, 'body'), requireBuyer, createOrderController)
 router.post('/cancel-order', apiRateLimiter, requireBuyerOrSeller, cancelOrderController)
 router.get('/', apiRateLimiter, authenticate, getOrdersController)
-router.get('/:id', apiRateLimiter, authenticate, getOrderController)
 router.put('/:id', apiRateLimiter, validate(orderSchema.partial(), 'body'), requireBuyer, updateOrderController)
 router.delete('/:id', apiRateLimiter, [authenticate, hasAnyRole(['admin', 'seller'])], deleteOrderController)
 
