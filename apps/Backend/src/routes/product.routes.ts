@@ -12,7 +12,7 @@ import { apiRateLimiter } from "../middlewares/rateLimit.js";
 
 const router = Router();
 
-router.post("/", apiRateLimiter, requireSeller, validate(createProductSchema, 'body'), createProductController)
+router.post("/", apiRateLimiter, validate(createProductSchema, 'body'), requireSeller, createProductController)
 router.get("/", apiRateLimiter, requireBuyerOrSeller, getProductsController)
 router.get("/:id", apiRateLimiter, requireBuyerOrSeller, getProductControllerById)
 router.put("/:id", apiRateLimiter, requireSeller, validate(productSchema.partial(), 'body'), isOwner, updateProductController)
