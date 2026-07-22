@@ -8,15 +8,19 @@ export default function ProductDetail() {
   const navigate = useNavigate()
   const addItem = useCartStore((s) => s.addItem)
   const [quantity, setQuantity] = useState(1)
-  const { data, isLoading, error } = useProduct(id!)
+  const { data: product, isLoading, error } = useProduct(id || "")
 
-  if (!data) {
+  if (isLoading) {
+    return <div className="text-center py-10">Loading product details...</div>
+  }
+
+  if (error || !product) {
     return <div className="text-center py-10 text-red-500">Product not found</div>
   }
 
   const handleAddToCart = () => {
     for (let i = 0; i < quantity; i++) {
-      addItem()
+      addItem(product)
     }
   }
 
