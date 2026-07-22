@@ -58,7 +58,7 @@ app.get('/health', (req: Request, res: Response) => {
 });
 
 // ============================================
-// 5. API Routes (Commented out for now)
+// 5. API Routes
 // ============================================
 app.use(apiRateLimiter);
 app.use('/auth', authRoutes);
