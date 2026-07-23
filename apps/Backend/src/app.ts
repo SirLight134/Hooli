@@ -1,4 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
+import path from 'path';
 import cors from 'cors';
 import pinoHttp from 'pino-http';
 import authRoutes from './routes/auth.routes.js';
@@ -61,8 +62,11 @@ app.get('/health', (req: Request, res: Response) => {
 });
 
 // ============================================
-// 5. API Routes
+// 5. Serve Static Frontend (production build)
 // ============================================
+app.use(express.static(path.join(__dirname, '../public')));
+
+// 6. API Routes
 app.use(apiRateLimiter);
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
@@ -72,13 +76,18 @@ app.use('/api/seller', sellerRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/upload', uploadRoutes);
 // ============================================
-// 6. 404 Handler (Must come after all routes)
+// 7. SPA Fallback (must come after API routes, before 404)
+// ============================================
+app.get('*', (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
+});
+
+// ============================================
+// 8. 404 Handler (Must come after all routes)
 // ============================================
 app.use(notFound);
 
-// ============================================
-// 7. Global Error Handler (Must be last)
-// ============================================
+// 9. Global Error Handler (Must be last)
 app.use(errorHandler);
 
 export default app;
