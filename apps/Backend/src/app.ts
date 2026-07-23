@@ -23,7 +23,17 @@ dbConnect();
 
 const app = express();
 app.set("trust proxy", 1);
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "https://images.unsplash.com", "https://placehold.co"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      styleSrc: ["'self'", "https:", "'unsafe-inline'"],
+      fontSrc: ["'self'", "https:", "data:"],
+    },
+  },
+}))
 // ============================================
 // 1. CORS Configuration (Must be first)
 // ============================================
