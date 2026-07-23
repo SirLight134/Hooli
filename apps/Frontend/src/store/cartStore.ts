@@ -12,50 +12,54 @@ interface CartState {
   removeItem: (productId: string) => void
   updateQuantity: (productId: string, quantity: number) => void
   clearCart: () => void
-  totalItems: number
-  totalPrice: number
 }
 
-export const useCartStore = create<CartState>((set, get) => ({
-  items: JSON.parse(localStorage.getItem("cart") || "[]"),
-  addItem: (product) => {
-    const items = get().items
-    const existing = items.find((i) => i.product._id === product._id)
-    let newItems: CartItem[]
-    if (existing) {
-      newItems = items.map((i) =>
-        i.product._id === product._id ? { ...i, quantity: i.quantity + 1 } : i
+function save(items: CartItem[]) {
+  localStorage.setItem("cart", JSON.stringify(items))
+}
+
+function load(): CartItem[] {
+  try {
+    return JSON.parse(localStorage.getItem("cart") || "[]")
+  } catch {
+    return []
+  }
+}
+
+export const useCartStore = create<CartState>((set) => ({
+  items: load(),
+  addItem: (product) =>
+    set((state) => {
+      const existing = state.items.find((i) => i.product._id === product._id)
+      const items = existing
+        ? state.items.map((i) =>
+            i.product._id === product._id ? { ...i, quantity: i.quantity + 1 } : i
+          )
+        : [...state.items, { product, quantity: 1 }]
+      save(items)
+      return { items }
+    }),
+  removeItem: (productId) =>
+    set((state) => {
+      const items = state.items.filter((i) => i.product._id !== productId)
+      save(items)
+      return { items }
+    }),
+  updateQuantity: (productId, quantity) =>
+    set((state) => {
+      if (quantity <= 0) {
+        const items = state.items.filter((i) => i.product._id !== productId)
+        save(items)
+        return { items }
+      }
+      const items = state.items.map((i) =>
+        i.product._id === productId ? { ...i, quantity } : i
       )
-    } else {
-      newItems = [...items, { product, quantity: 1 }]
-    }
-    localStorage.setItem("cart", JSON.stringify(newItems))
-    set({ items: newItems })
-  },
-  removeItem: (productId) => {
-    const newItems = get().items.filter((i) => i.product._id !== productId)
-    localStorage.setItem("cart", JSON.stringify(newItems))
-    set({ items: newItems })
-  },
-  updateQuantity: (productId, quantity) => {
-    if (quantity <= 0) {
-      get().removeItem(productId)
-      return
-    }
-    const newItems = get().items.map((i) =>
-      i.product._id === productId ? { ...i, quantity } : i
-    )
-    localStorage.setItem("cart", JSON.stringify(newItems))
-    set({ items: newItems })
-  },
+      save(items)
+      return { items }
+    }),
   clearCart: () => {
     localStorage.removeItem("cart")
     set({ items: [] })
-  },
-  get totalItems() {
-    return get().items.reduce((a, b) => a + b.quantity, 0)
-  },
-  get totalPrice() {
-    return get().items.reduce((a, b) => a + b.product.price * b.quantity, 0)
   },
 }))

@@ -18,7 +18,10 @@ const ShoppingCartIcon = () => (
 )
 
 export default function Cart() {
-  const { items, removeItem, updateQuantity, totalPrice } = useCartStore()
+  const items = useCartStore((s) => s.items)
+  const removeItem = useCartStore((s) => s.removeItem)
+  const updateQuantity = useCartStore((s) => s.updateQuantity)
+  const totalPrice = items.reduce((a, b) => a + b.product.price * b.quantity, 0)
 
   if (items.length === 0) {
     return (

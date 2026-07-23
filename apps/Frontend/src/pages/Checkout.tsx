@@ -5,7 +5,9 @@ import { createCheckoutSessionApi } from "../api/stripe"
 import { useAuthStore } from "../store/authStore"
 
 export default function Checkout() {
-  const { items, totalPrice, clearCart } = useCartStore()
+  const items = useCartStore((s) => s.items)
+  const clearCart = useCartStore((s) => s.clearCart)
+  const totalPrice = items.reduce((a, b) => a + b.product.price * b.quantity, 0)
   const user = useAuthStore((s) => s.user)
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
