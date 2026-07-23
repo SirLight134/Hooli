@@ -20,32 +20,86 @@ export default function Register() {
   }
 
   return (
-    <div className="max-w-md mx-auto mt-10">
-      <h1 className="text-2xl font-bold mb-6">Register</h1>
-      {error && <p className="text-red-500 mb-4">{error}</p>}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">Name</label>
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)}
-            className="w-full border rounded px-3 py-2" required />
+    <div className="max-w-md mx-auto mt-10 md:mt-16 px-4">
+      <div className="card-outer">
+        <div className="card-inner p-8">
+          <div className="text-center mb-6">
+            <span className="bg-gradient-to-r from-accent-primary to-accent-hover bg-clip-text text-transparent text-h3 font-bold">
+              Hooli
+            </span>
+          </div>
+
+          <h2 className="text-h2 text-center text-text-primary mb-8">Create your account</h2>
+
+          {error && (
+            <div className="bg-status-error/10 border border-status-error/20 rounded-xl p-4 mb-5">
+              <p className="text-status-error text-body-sm">{error}</p>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label htmlFor="name" className="block text-caption font-medium text-text-secondary mb-1.5">
+                Name
+              </label>
+              <input
+                id="name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full rounded-xl border border-border-default bg-surface-primary px-4 py-3 text-body text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary focus-visible:outline-2 focus-visible:outline-accent-primary transition-colors duration-150"
+                placeholder="Your full name"
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="email" className="block text-caption font-medium text-text-secondary mb-1.5">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full rounded-xl border border-border-default bg-surface-primary px-4 py-3 text-body text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary focus-visible:outline-2 focus-visible:outline-accent-primary transition-colors duration-150"
+                placeholder="you@example.com"
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="password" className="block text-caption font-medium text-text-secondary mb-1.5">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full rounded-xl border border-border-default bg-surface-primary px-4 py-3 text-body text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary focus-visible:outline-2 focus-visible:outline-accent-primary transition-colors duration-150"
+                placeholder="Create a strong password"
+                required
+                minLength={6}
+              />
+            </div>
+
+            <button type="submit" className="btn-primary w-full py-3">
+              Register
+            </button>
+          </form>
+
+          <p className="mt-6 text-center text-body-sm text-text-secondary">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="text-accent-primary hover:text-accent-hover font-medium focus-visible:outline-2 focus-visible:outline-accent-primary rounded-sm"
+            >
+              Sign in
+            </Link>
+          </p>
         </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Email</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-            className="w-full border rounded px-3 py-2" required />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Password</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}
-            className="w-full border rounded px-3 py-2" required minLength={6} />
-        </div>
-        <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
-          Register
-        </button>
-      </form>
-      <p className="mt-4 text-center text-sm">
-        Already have an account? <Link to="/login" className="text-blue-600 hover:underline">Login</Link>
-      </p>
+      </div>
     </div>
   )
 }

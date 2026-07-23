@@ -8,14 +8,21 @@ export default function Orders() {
   const { data: orders, isLoading, error } = useOrders()
 
   if (!isAuthenticated) return <Navigate to="/login" replace />
-  if (isLoading) return <div className="text-center py-10 text-lg">Loading orders...</div>
-  if (error) return <div className="text-center py-10 text-red-500">Failed to load orders</div>
+  if (isLoading)
+    return (
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <div key={i} className="animate-pulse bg-surface-secondary rounded-2xl h-32" />
+        ))}
+      </div>
+    )
+  if (error) return <p className="text-center py-10 text-status-error">Failed to load orders</p>
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-6">My Orders</h1>
+      <h1 className="text-h1 mb-8">My Orders</h1>
       {!orders || orders.length === 0 ? (
-        <p className="text-gray-500">No orders yet.</p>
+        <p className="text-text-tertiary text-center py-10">No orders yet.</p>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {orders.map((order) => (

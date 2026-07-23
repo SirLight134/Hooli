@@ -1,3 +1,388 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    /* ---- Color Palette (Light) ---- */
+    --surface-primary: #FFFFFF;
+    --surface-secondary: #F8F9FA;
+    --surface-elevated: #FFFFFF;
+    --surface-brand: #0D1B2A;
+
+    --text-primary: #0D1B2A;
+    --text-secondary: #5A6B7D;
+    --text-tertiary: #8E9BAA;
+    --text-inverse: #FFFFFF;
+
+    --border-default: #E5EDF5;
+    --border-subtle: #F0F4F8;
+
+    --accent-primary: #7C3AED;
+    --accent-hover: #6D28D9;
+    --accent-subtle: #EDE9FE;
+
+    --status-success: #10B981;
+    --status-warning: #F59E0B;
+    --status-error: #EF4444;
+    --status-info: #3B82F6;
+
+    /* ---- Shadow Colors ---- */
+    --shadow-subtle: 0 1px 2px rgba(59,53,80,0.06);
+    --shadow-default: 0 2px 8px rgba(59,53,80,0.08);
+    --shadow-prominent: 0 8px 32px rgba(59,53,80,0.12);
+    --shadow-ambient: 0 0 0 1px rgba(59,53,80,0.04);
+
+    /* ---- Typography ---- */
+    --font-display-size: 3.5rem;
+    --font-display-weight: 300;
+    --font-display-lineheight: 1.05;
+    --font-display-tracking: -0.025em;
+
+    --font-h1-size: 2.5rem;
+    --font-h1-weight: 400;
+    --font-h1-lineheight: 1.1;
+    --font-h1-tracking: -0.02em;
+
+    --font-h2-size: 1.875rem;
+    --font-h2-weight: 500;
+    --font-h2-lineheight: 1.2;
+    --font-h2-tracking: -0.015em;
+
+    --font-h3-size: 1.375rem;
+    --font-h3-weight: 500;
+    --font-h3-lineheight: 1.3;
+    --font-h3-tracking: -0.01em;
+
+    --font-h4-size: 1.125rem;
+    --font-h4-weight: 600;
+    --font-h4-lineheight: 1.4;
+    --font-h4-tracking: 0;
+
+    --font-body-lg-size: 1.125rem;
+    --font-body-lg-weight: 400;
+    --font-body-lg-lineheight: 1.6;
+    --font-body-lg-tracking: 0;
+
+    --font-body-size: 1rem;
+    --font-body-weight: 400;
+    --font-body-lineheight: 1.6;
+    --font-body-tracking: 0;
+
+    --font-body-sm-size: 0.875rem;
+    --font-body-sm-weight: 400;
+    --font-body-sm-lineheight: 1.5;
+    --font-body-sm-tracking: 0;
+
+    --font-caption-size: 0.8125rem;
+    --font-caption-weight: 500;
+    --font-caption-lineheight: 1.4;
+    --font-caption-tracking: 0.01em;
+
+    --font-overline-size: 0.6875rem;
+    --font-overline-weight: 600;
+    --font-overline-lineheight: 1.3;
+    --font-overline-tracking: 0.08em;
+
+    /* ---- Spacing (4px base) ---- */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+    --space-20: 5rem;
+    --space-24: 6rem;
+
+    /* ---- Border Radii ---- */
+    --radius-pill: 9999px;
+    --radius-xl: 0.75rem;
+    --radius-2xl: 1rem;
+
+    /* ---- Transitions ---- */
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-expo: cubic-bezier(0.7, 0, 0.84, 0);
+    --duration-micro: 150ms;
+    --duration-standard: 250ms;
+    --duration-emphasis: 500ms;
+  }
+
+  .dark {
+    --surface-primary: #0A0A0A;
+    --surface-secondary: #121212;
+    --surface-elevated: #1A1A1A;
+    --surface-brand: #0D1B2A;
+
+    --text-primary: #F0F0F0;
+    --text-secondary: #A0A0A0;
+    --text-tertiary: #666666;
+    --text-inverse: #FFFFFF;
+
+    --border-default: #2A2A2A;
+    --border-subtle: #1E1E1E;
+
+    --accent-primary: #8B5CF6;
+    --accent-hover: #A78BFA;
+    --accent-subtle: #1E1B4B;
+
+    --status-success: #34D399;
+    --status-warning: #FBBF24;
+    --status-error: #F87171;
+    --status-info: #60A5FA;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  ::selection {
+    background-color: var(--accent-subtle);
+    color: var(--accent-hover);
+  }
+
+  body {
+    font-family: "Geist", "Inter", "system-ui", "-apple-system", "sans-serif";
+    color: var(--text-primary);
+    background-color: var(--surface-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  /* ---- Floating Glass Navigation Pill ---- */
+  .glass-pill {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: var(--shadow-default);
+  }
+
+  .dark .glass-pill {
+    background-color: rgba(10, 10, 10, 0.7);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  /* ---- Double-Bezel Card Architecture ---- */
+  .card-outer {
+    background-color: rgba(0, 0, 0, 0.02);
+    padding: 0.375rem;
+    border-radius: var(--radius-2xl);
+  }
+
+  .card-inner {
+    background-color: var(--surface-primary);
+    border-radius: calc(1rem - 0.375rem);
+    box-shadow: var(--shadow-subtle);
+  }
+
+  /* ---- Buttons ---- */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-6);
+    border-radius: var(--radius-pill);
+    background-color: var(--accent-primary);
+    color: var(--text-inverse);
+    font-weight: 500;
+    font-size: var(--font-body-size);
+    line-height: var(--font-body-lineheight);
+    transition: background-color var(--duration-micro) ease-out,
+                transform var(--duration-micro) ease-out;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--accent-hover);
+  }
+
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
+
+  .btn-primary:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-6);
+    border-radius: var(--radius-pill);
+    background-color: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border-default);
+    font-weight: 500;
+    font-size: var(--font-body-size);
+    line-height: var(--font-body-lineheight);
+    transition: border-color var(--duration-micro) ease-out,
+                background-color var(--duration-micro) ease-out,
+                transform var(--duration-micro) ease-out;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--accent-primary);
+    background-color: var(--accent-subtle);
+  }
+
+  .btn-secondary:active {
+    transform: scale(0.98);
+  }
+
+  .btn-secondary:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+  }
+
+  .btn-secondary:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  /* ---- Status Badges ---- */
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-pill);
+    font-size: var(--font-caption-size);
+    font-weight: var(--font-caption-weight);
+    line-height: var(--font-caption-lineheight);
+    letter-spacing: var(--font-caption-tracking);
+  }
+
+  .status-badge--pending {
+    background-color: #FEF3C7;
+    color: #92400E;
+  }
+
+  .status-badge--paid {
+    background-color: #D1FAE5;
+    color: #065F46;
+  }
+
+  .status-badge--processing {
+    background-color: #DBEAFE;
+    color: #1E40AF;
+  }
+
+  .status-badge--shipped {
+    background-color: var(--accent-subtle);
+    color: var(--accent-hover);
+  }
+
+  .status-badge--delivered {
+    background-color: var(--status-success);
+    color: var(--text-inverse);
+  }
+
+  .status-badge--cancelled {
+    background-color: #FEE2E2;
+    color: #991B1B;
+  }
+
+  .dark .status-badge--pending {
+    background-color: rgba(251, 191, 36, 0.15);
+    color: #FBBF24;
+  }
+
+  .dark .status-badge--paid {
+    background-color: rgba(16, 185, 129, 0.15);
+    color: #34D399;
+  }
+
+  .dark .status-badge--processing {
+    background-color: rgba(59, 130, 246, 0.15);
+    color: #60A5FA;
+  }
+
+  .dark .status-badge--shipped {
+    background-color: rgba(124, 58, 237, 0.15);
+    color: #A78BFA;
+  }
+
+  .dark .status-badge--delivered {
+    background-color: rgba(16, 185, 129, 0.25);
+    color: #34D399;
+  }
+
+  .dark .status-badge--cancelled {
+    background-color: rgba(239, 68, 68, 0.15);
+    color: #F87171;
+  }
+}
+
+@layer utilities {
+  /* ---- Animation Utilities ---- */
+  .animate-fade-up {
+    animation: fade-up 0.6s var(--ease-out-expo) forwards;
+  }
+
+  .animate-card-lift {
+    animation: card-lift 0.2s var(--ease-out-expo) forwards;
+  }
+
+  .animate-nav-blur {
+    animation: nav-blur 0.3s ease-out forwards;
+  }
+
+  @keyframes fade-up {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes card-lift {
+    0% {
+      transform: translateY(0);
+      box-shadow: var(--shadow-subtle);
+    }
+    100% {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-prominent);
+    }
+  }
+
+  @keyframes nav-blur {
+    0% {
+      backdrop-filter: blur(0);
+      -webkit-backdrop-filter: blur(0);
+    }
+    100% {
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+  }
+
+  /* ---- Reduced Motion ---- */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-up,
+    .animate-card-lift,
+    .animate-nav-blur {
+      animation: none;
+    }
+
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
