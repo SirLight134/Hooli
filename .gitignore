@@ -68,6 +68,7 @@ Thumbs.db
 # =========================
 tmp/
 temp/
+uploads/
 
 # =========================
 # Lockfiles (OPTIONAL)

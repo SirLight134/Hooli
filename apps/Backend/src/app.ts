@@ -4,6 +4,7 @@ import pinoHttp from 'pino-http';
 import authRoutes from './routes/auth.routes.js';
 import productRoutes from './routes/product.routes.js';
 import orderRoutes from './routes/order.routes.js';
+import uploadRoutes from './routes/upload.routes.js';
 import stripeWebhookRoutes from './routes/stripe.webhook.routes.js';
 import dbConnect from './config/database';
 import mongoose from 'mongoose';
@@ -69,6 +70,7 @@ app.use('/orders', orderRoutes);
 app.use('/stripe', stripeRoutes);
 app.use('/seller', sellerRoutes);
 app.use('/admin', adminRoutes);
+app.use("/upload", uploadRoutes);
 // ============================================
 // 6. 404 Handler (Must come after all routes)
 // ============================================
