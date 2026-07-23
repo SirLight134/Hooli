@@ -46,48 +46,63 @@ export default function Checkout() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Checkout</h1>
-      {error && <p className="text-red-500 mb-4">{error}</p>}
-      <div className="bg-white rounded-lg shadow p-6 mb-6">
-        <h2 className="text-xl font-semibold mb-4">Order Items</h2>
-        {items.map((item) => (
-          <div key={item.product._id} className="flex justify-between py-2 border-b">
-            <span>{item.product.name} x{item.quantity}</span>
-            <span>${(item.product.price * item.quantity).toFixed(2)}</span>
+    <div className="max-w-2xl mx-auto px-4 py-8">
+      <h1 className="text-h1 font-bold text-text-primary mb-8">Checkout</h1>
+
+      {error && (
+        <div className="bg-status-error/10 border border-status-error/20 rounded-xl p-4 text-status-error text-body-sm mb-6">
+          {error}
+        </div>
+      )}
+
+      {/* Order Items */}
+      <div className="card-outer mb-6">
+        <div className="card-inner p-6">
+          <h2 className="text-h2 font-semibold text-text-primary mb-4">Order Items</h2>
+          {items.map((item) => (
+            <div key={item.product._id} className="flex justify-between py-3 border-b border-border-subtle last:border-b-0">
+              <span className="text-body text-text-primary">{item.product.name} x{item.quantity}</span>
+              <span className="text-body font-medium text-text-primary">${(item.product.price * item.quantity).toFixed(2)}</span>
+            </div>
+          ))}
+          <div className="flex justify-between font-bold text-h2 text-text-primary mt-4 pt-4 border-t border-border-default">
+            <span>Total</span>
+            <span>${totalPrice.toFixed(2)}</span>
           </div>
-        ))}
-        <div className="flex justify-between font-bold text-lg mt-4">
-          <span>Total</span>
-          <span>${totalPrice.toFixed(2)}</span>
         </div>
       </div>
-      <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-6 space-y-4">
-        <h2 className="text-xl font-semibold mb-4">Shipping Address</h2>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="col-span-2">
-            <label className="block text-sm font-medium mb-1">Street</label>
-            <input type="text" value={address.street} onChange={(e) => setAddress({ ...address, street: e.target.value })}
-              className="w-full border rounded px-3 py-2" required />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">City</label>
-            <input type="text" value={address.city} onChange={(e) => setAddress({ ...address, city: e.target.value })}
-              className="w-full border rounded px-3 py-2" required />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Country</label>
-            <input type="text" value={address.country} onChange={(e) => setAddress({ ...address, country: e.target.value })}
-              className="w-full border rounded px-3 py-2" required />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-1">Zip Code</label>
-            <input type="text" value={address.zipCode} onChange={(e) => setAddress({ ...address, zipCode: e.target.value })}
-              className="w-full border rounded px-3 py-2" required />
+
+      {/* Shipping Address */}
+      <form onSubmit={handleSubmit}>
+        <div className="card-outer mb-6">
+          <div className="card-inner p-6">
+            <h2 className="text-h2 font-semibold text-text-primary mb-4">Shipping Address</h2>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="col-span-2">
+                <label className="block text-caption font-medium text-text-secondary mb-1.5">Street</label>
+                <input type="text" value={address.street} onChange={(e) => setAddress({ ...address, street: e.target.value })}
+                  className="w-full rounded-xl border border-border-default bg-surface-primary px-4 py-3 text-body text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary focus-visible:outline-2 focus-visible:outline-accent-primary transition-colors duration-150" required />
+              </div>
+              <div>
+                <label className="block text-caption font-medium text-text-secondary mb-1.5">City</label>
+                <input type="text" value={address.city} onChange={(e) => setAddress({ ...address, city: e.target.value })}
+                  className="w-full rounded-xl border border-border-default bg-surface-primary px-4 py-3 text-body text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary focus-visible:outline-2 focus-visible:outline-accent-primary transition-colors duration-150" required />
+              </div>
+              <div>
+                <label className="block text-caption font-medium text-text-secondary mb-1.5">Country</label>
+                <input type="text" value={address.country} onChange={(e) => setAddress({ ...address, country: e.target.value })}
+                  className="w-full rounded-xl border border-border-default bg-surface-primary px-4 py-3 text-body text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary focus-visible:outline-2 focus-visible:outline-accent-primary transition-colors duration-150" required />
+              </div>
+              <div>
+                <label className="block text-caption font-medium text-text-secondary mb-1.5">Zip Code</label>
+                <input type="text" value={address.zipCode} onChange={(e) => setAddress({ ...address, zipCode: e.target.value })}
+                  className="w-full rounded-xl border border-border-default bg-surface-primary px-4 py-3 text-body text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-accent-primary focus:ring-1 focus:ring-accent-primary focus-visible:outline-2 focus-visible:outline-accent-primary transition-colors duration-150" required />
+              </div>
+            </div>
           </div>
         </div>
         <button type="submit" disabled={loading}
-          className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition text-lg">
+          className="btn-primary w-full py-3">
           {loading ? "Processing..." : `Pay $${totalPrice.toFixed(2)}`}
         </button>
       </form>
