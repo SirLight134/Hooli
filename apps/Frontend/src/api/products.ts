@@ -3,17 +3,17 @@ import type { Product } from "../types"
 
 export const getProductsApi = async (params?: Record<string, string>) => {
   const { data } = await apiClient.get<{ message: string; products: Product[] }>("/products/", { params })
-  return data.products
+  return data.products ?? []
 }
 
 export const getProductApi = async (id: string) => {
   const { data } = await apiClient.get<{ message: string; product: Product }>(`/products/${id}`)
-  return data.product
+  return data.product ?? null
 }
 
 export const createProductApi = async (product: Partial<Product>) => {
   const { data } = await apiClient.post<{ message: string; product: Product }>("/products/", product)
-  return data.product
+  return data.product ?? null
 }
 
 export const updateProductApi = async (id: string, product: Partial<Product>) => {
