@@ -4,7 +4,7 @@ import logger from "../utils/logger.js";
 
 export const isOwner = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { _id } = req.user as any;
+        const { _id } = req.user!;
         const product = await Product.findById(req.params.id);
         if (!product) {
             return res.status(404).json({ message: "Product not found" })
@@ -13,8 +13,9 @@ export const isOwner = async (req: Request, res: Response, next: NextFunction) =
             return res.status(403).json({ message: "You are not the owner of this product" });
         }
         next();
-    } catch (error: any) {
-        logger.error(error, 'Owner check failed');
-        res.status(500).json({ message: error.message });
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+        logger.error({ error }, 'Owner check failed');
+        res.status(500).json({ message });
     }
 }

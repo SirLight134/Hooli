@@ -13,9 +13,10 @@ export const getDashboardStats = async (req: Request, res: Response) => {
             Order.countDocuments(),
         ]);
         res.json({ users, products, orders });
-    } catch (error: any) {
-        logger.error(error, "Failed to get dashboard stats");
-        res.status(500).json({ message: error.message });
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+        logger.error({ error }, 'Failed to get dashboard stats');
+        res.status(500).json({ message });
     }
 };
 
@@ -30,9 +31,10 @@ export const getAllUsers = async (req: Request, res: Response) => {
         logger.info({ count: users.length }, 'User Found')
         res.status(200).json({ message: "User fetched successfully", users });
 
-    } catch (error: any) {
-        logger.error(error, 'Faiiled to fetch Users')
-        res.status(500).json({ message: error.message });
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+        logger.error({ error }, 'Failed to fetch Users');
+        res.status(500).json({ message });
     }
 }
 
@@ -45,9 +47,10 @@ export const updateUserRole = async (req: Request, res: Response) => {
         logger.info({ userId: req.params.id }, 'User Role updated');
         res.status(200).json({ message: "User Role updated successfully" });
 
-    } catch (error: any) {
-        logger.error(error, 'Failed to update the User Role');
-        res.status(500).json({ message: error.message });
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+        logger.error({ error }, 'Failed to update the User Role');
+        res.status(500).json({ message });
     }
 }
 export const deleteUser = async (req: Request, res: Response) => {
@@ -58,8 +61,9 @@ export const deleteUser = async (req: Request, res: Response) => {
         }
         logger.info({ userId: req.params.id }, 'User deleted');
         res.status(200).json({ message: "User deleted successfully" });
-    } catch (error: any) {
-        logger.error(error, 'Failed to delete the User');
-        res.status(500).json({ message: error.message });
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+        logger.error({ error }, 'Failed to delete the User');
+        res.status(500).json({ message });
     }
 };

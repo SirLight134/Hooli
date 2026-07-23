@@ -8,9 +8,10 @@ export const getSellerProducts = async (req: Request, res: Response) => {
     try {
         const products = await User.findById(req.params.id).populate("products")
         res.status(200).json({ message: "Products fetched successfully", products });
-    } catch (error: any) {
-        logger.error(error, 'Failed to fetch products');
-        res.status(500).json({ message: error.message });
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+        logger.error({ error }, 'Failed to fetch products');
+        res.status(500).json({ message });
     }
 }
 
@@ -25,9 +26,10 @@ export const getSellerDashboardStats = async (req: Request, res: Response) => {
             Order.countDocuments(),
         ]);
         res.json({ products, orders });
-    } catch (error: any) {
-        logger.error(error, "Failed to get dashboard stats");
-        res.status(500).json({ message: error.message });
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+        logger.error({ error }, 'Failed to get dashboard stats');
+        res.status(500).json({ message });
     }
 };
 
@@ -36,9 +38,10 @@ export const getSellerOrders = async (req: Request, res: Response) => {
     try {
         const orders = await Order.find({ seller: req.params.id })
         res.status(200).json({ message: "Orders fetched successfully", orders });
-    } catch (error: any) {
-        logger.error(error, 'Failed to fetch orders');
-        res.status(500).json({ message: error.message });
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+        logger.error({ error }, 'Failed to fetch orders');
+        res.status(500).json({ message });
     }
 };
 
@@ -50,8 +53,9 @@ export const updateSellerOrder = async (req: Request, res: Response) => {
         }
         logger.info({ orderId: req.params.id }, 'Order updated');
         res.status(200).json({ message: "Order updated successfully" });
-    } catch (error: any) {
-        logger.error(error, 'Failed to update order');
-        res.status(500).json({ message: error.message });
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+        logger.error({ error }, 'Failed to update order');
+        res.status(500).json({ message });
     }
 };

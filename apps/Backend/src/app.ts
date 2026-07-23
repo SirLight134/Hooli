@@ -64,13 +64,13 @@ app.get('/health', (req: Request, res: Response) => {
 // 5. API Routes
 // ============================================
 app.use(apiRateLimiter);
-app.use('/auth', authRoutes);
-app.use('/products', productRoutes);
-app.use('/orders', orderRoutes);
-app.use('/stripe', stripeRoutes);
-app.use('/seller', sellerRoutes);
-app.use('/admin', adminRoutes);
-app.use("/upload", uploadRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/stripe', stripeRoutes);
+app.use('/api/seller', sellerRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/upload', uploadRoutes);
 // ============================================
 // 6. 404 Handler (Must come after all routes)
 // ============================================
