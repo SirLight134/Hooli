@@ -30,9 +30,10 @@ export const webhookController = async (req: Request, res: Response) => {
                 logger.debug(`Event type: ${event.type} data: ${event.data.object}`);
                 res.status(200).json({ message: `Event type: ${event.type}` });
         }
-    } catch (error: any) {
-        logger.error(error, 'Failed to process webhook');
-        res.status(500).json({ message: "Failed to process webhook" });
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+        logger.error({ error }, 'Failed to process webhook');
+        res.status(500).json({ message: 'Failed to process webhook' });
     }
 
 
@@ -51,9 +52,10 @@ export const createCheckoutSessionController = async (req: Request, res: Respons
 
         const session = await createCheckoutSession(products, req.body.orderId, req.body.userId);
         return res.json({ url: session.url, sessionId: session.id });
-    } catch (error: any) {
-        logger.error(error, 'Failed to create checkout session');
-        return res.status(500).json({ message: error.message });
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+        logger.error({ error }, 'Failed to create checkout session');
+        return res.status(500).json({ message });
     }
 
 

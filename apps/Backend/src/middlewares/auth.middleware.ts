@@ -25,7 +25,7 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
         req.user = currentUser;
         logger.debug({ userId: currentUser._id }, 'Authenticated user');
         next();
-    } catch (error: any) {
+    } catch (error: unknown) {
         return res.status(401).json({ message: "Not authorized to access this route. Invalid or expired token." });
     }
 };

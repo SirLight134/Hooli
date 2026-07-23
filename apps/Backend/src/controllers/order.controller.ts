@@ -20,8 +20,9 @@ export const createOrderController = async (req: Request, res: Response) => {
             shippingAddress,
         });
         return res.status(201).json(order);
-    } catch (error: any) {
-        return res.status(500).json({ message: error.message });
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+        return res.status(500).json({ message });
     }
 };
 
@@ -35,8 +36,9 @@ export const cancelOrderController = async (req: Request, res: Response) => {
         order.status = OrderStatus.CANCELLED;
         await order.save();
         return res.json(order);
-    } catch (error: any) {
-        return res.status(500).json({ message: error.message });
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+        return res.status(500).json({ message });
     }
 };
 
@@ -49,8 +51,9 @@ export const getOrdersController = async (req: Request, res: Response) => {
             .populate('products.product', 'name price images')
             .sort({ createdAt: -1 });
         return res.json(orders);
-    } catch (error: any) {
-        return res.status(500).json({ message: error.message });
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+        return res.status(500).json({ message });
     }
 };
 
@@ -67,8 +70,9 @@ export const getOrderController = async (req: Request, res: Response) => {
             return res.status(403).json({ message: 'Not authorized' });
         }
         return res.json(order);
-    } catch (error: any) {
-        return res.status(500).json({ message: error.message });
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+        return res.status(500).json({ message });
     }
 };
 
@@ -77,8 +81,9 @@ export const updateOrderController = async (req: Request, res: Response) => {
         logger.debug('Update order endpoint called');
         const order = await updateOrderStatusService(req.params.id, req.body.status);
         return res.json(order);
-    } catch (error: any) {
-        return res.status(500).json({ message: error.message });
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+        return res.status(500).json({ message });
     }
 };
 
@@ -90,7 +95,8 @@ export const deleteOrderController = async (req: Request, res: Response) => {
             return res.status(404).json({ message: 'Order not found' });
         }
         return res.json({ message: 'Order deleted' });
-    } catch (error: any) {
-        return res.status(500).json({ message: error.message });
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : 'An unexpected error occurred';
+        return res.status(500).json({ message });
     }
 };
