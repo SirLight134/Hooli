@@ -5,7 +5,7 @@ const router = Router();
 
 /**
  * @swagger
- * /stripe/create-checkout-session:
+ * /api/stripe/create-checkout-session:
  *   post:
  *     summary: Create a Stripe checkout session
  *     tags: [Stripe]

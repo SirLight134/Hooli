@@ -9,7 +9,7 @@ const router = Router();
 
 /**
  * @swagger
- * /admin/product:
+ * /api/admin/product:
  *   post:
  *     summary: Create a new product (admin)
  *     tags: [Admin]
@@ -32,7 +32,7 @@ const router = Router();
 router.post('/product', apiRateLimiter, requireAdmin, createProductController)
 /**
  * @swagger
- * /admin/users:
+ * /api/admin/users:
  *   get:
  *     summary: Get all users (admin dashboard)
  *     tags: [Admin]
@@ -60,7 +60,7 @@ router.post('/product', apiRateLimiter, requireAdmin, createProductController)
 router.get("/users", apiRateLimiter, requireAdmin, getAllUsers)
 /**
  * @swagger
- * /admin/{id}:
+ * /api/admin/{id}:
  *   put:
  *     summary: Update user role
  *     tags: [Admin]
@@ -96,7 +96,7 @@ router.get("/users", apiRateLimiter, requireAdmin, getAllUsers)
 router.put('/:id', apiRateLimiter, requireAdmin, updateUserRole)
 /**
  * @swagger
- * /admin/{id}:
+ * /api/admin/{id}:
  *   delete:
  *     summary: Delete user
  *     tags: [Admin]

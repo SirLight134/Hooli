@@ -15,7 +15,7 @@ const router = Router();
 
 /**
  * @swagger
- * /orders/create-order:
+ * /api/orders/create-order:
  *   post:
  *     summary: Create a new order
  *     tags: [Orders]
@@ -39,7 +39,7 @@ router.post('/create-order', apiRateLimiter, validate(createOrderSchema, 'body')
 
 /**
  * @swagger
- * /orders/cancel-order:
+ * /api/orders/cancel-order:
  *   post:
  *     summary: Cancel an order
  *     tags: [Orders]
@@ -68,7 +68,7 @@ router.post('/cancel-order', apiRateLimiter, requireBuyerOrSeller, cancelOrderCo
 
 /**
  * @swagger
- * /orders/:
+ * /api/orders/:
  *   get:
  *     summary: Get all orders (authenticated)
  *     tags: [Orders]
@@ -97,7 +97,7 @@ router.post('/cancel-order', apiRateLimiter, requireBuyerOrSeller, cancelOrderCo
 router.get('/', apiRateLimiter, authenticate, getOrdersController)
 /**
  * @swagger
- * /orders/{id}:
+ * /api/orders/{id}:
  *   put:
  *     summary: Update order
  *     tags: [Orders]
@@ -129,7 +129,7 @@ router.get('/', apiRateLimiter, authenticate, getOrdersController)
 router.put('/:id', apiRateLimiter, validate(orderSchema.partial(), 'body'), requireBuyer, updateOrderController)
 /**
  * @swagger
- * /orders/{id}:
+ * /api/orders/{id}:
  *   delete:
  *     summary: Delete order
  *     tags: [Orders]

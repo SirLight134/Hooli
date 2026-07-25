@@ -14,7 +14,7 @@ const router = Router();
 
 /**
  * @swagger
- * /products:
+ * /api/products:
  *   post:
  *     summary: Create a new product
  *     tags: [Products]
@@ -37,7 +37,7 @@ const router = Router();
 router.post("/", apiRateLimiter, requireSeller, validate(createProductSchema, 'body'), createProductController)
 /**
  * @swagger
- * /products:
+ * /api/products:
  *   get:
  *     summary: Get all products (public)
  *     tags: [Products]
@@ -79,7 +79,7 @@ router.post("/", apiRateLimiter, requireSeller, validate(createProductSchema, 'b
 router.get("/", apiRateLimiter, getProductsController)
 /**
  * @swagger
- * /products/{id}:
+ * /api/products/{id}:
  *   get:
  *     summary: Get product by ID (public)
  *     tags: [Products]
@@ -99,7 +99,7 @@ router.get("/", apiRateLimiter, getProductsController)
 router.get("/:id", apiRateLimiter, getProductControllerById)
 /**
  * @swagger
- * /products/{id}:
+ * /api/products/{id}:
  *   put:
  *     summary: Update product
  *     tags: [Products]
@@ -131,7 +131,7 @@ router.get("/:id", apiRateLimiter, getProductControllerById)
 router.put("/:id", apiRateLimiter, requireSeller, validate(productSchema.partial(), 'body'), isOwner, updateProductController)
 /**
  * @swagger
- * /products/{id}:
+ * /api/products/{id}:
  *   delete:
  *     summary: Delete product
  *     tags: [Products]

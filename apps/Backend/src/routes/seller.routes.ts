@@ -8,7 +8,7 @@ import { updateProductSchema } from "@hooli/shared";
 const router = Router();
 /**
  * @swagger
- * /seller/dashboard:
+ * /api/seller/dashboard:
  *   get:
  *     summary: Get seller dashboard statistics
  *     tags: [Seller]
@@ -25,7 +25,7 @@ const router = Router();
 router.get("/dashboard", apiRateLimiter, requireSeller, getSellerDashboardStats);
 /**
  * @swagger
- * /seller/products:
+ * /api/seller/products:
  *   get:
  *     summary: Get seller products
  *     tags: [Seller]
@@ -53,7 +53,7 @@ router.get("/dashboard", apiRateLimiter, requireSeller, getSellerDashboardStats)
 router.get("/products", apiRateLimiter, requireSeller, getSellerProducts);
 /**
  * @swagger
- * /seller/orders:
+ * /api/seller/orders:
  *   get:
  *     summary: Get seller orders
  *     tags: [Seller]
@@ -86,7 +86,7 @@ router.get("/products", apiRateLimiter, requireSeller, getSellerProducts);
 router.get("/orders", apiRateLimiter, requireSeller, getSellerOrders);
 /**
  * @swagger
- * /seller/orders/{id}:
+ * /api/seller/orders/{id}:
  *   put:
  *     summary: Update seller order
  *     tags: [Seller]

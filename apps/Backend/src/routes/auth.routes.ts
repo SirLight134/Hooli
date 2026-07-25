@@ -10,7 +10,139 @@ const router = Router();
 
 /**
  * @swagger
- * /auth/login:
+ * components:
+ *   schemas:
+ *     LoginInput:
+ *       type: object
+ *       required: [email, password]
+ *       properties:
+ *         email:
+ *           type: string
+ *           format: email
+ *         password:
+ *           type: string
+ *           minLength: 6
+ *     RegisterInput:
+ *       type: object
+ *       required: [name, email, password]
+ *       properties:
+ *         name:
+ *           type: string
+ *           minLength: 3
+ *         email:
+ *           type: string
+ *           format: email
+ *         password:
+ *           type: string
+ *           minLength: 6
+ *         role:
+ *           type: string
+ *           enum: [buyer, seller]
+ *     CreateProductInput:
+ *       type: object
+ *       required: [name, description, price, stock, brand]
+ *       properties:
+ *         name:
+ *           type: string
+ *           minLength: 3
+ *         description:
+ *           type: string
+ *           minLength: 3
+ *         price:
+ *           type: number
+ *         stock:
+ *           type: integer
+ *         images:
+ *           type: array
+ *           items:
+ *             type: string
+ *         category:
+ *           type: string
+ *         brand:
+ *           type: string
+ *         discount:
+ *           type: number
+ *         tags:
+ *           type: array
+ *           items:
+ *             type: string
+ *     UpdateProductInput:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *         description:
+ *           type: string
+ *         price:
+ *           type: number
+ *         stock:
+ *           type: integer
+ *         images:
+ *           type: array
+ *           items:
+ *             type: string
+ *         category:
+ *           type: string
+ *         brand:
+ *           type: string
+ *         discount:
+ *           type: number
+ *         tags:
+ *           type: array
+ *           items:
+ *             type: string
+ *     CreateOrderInput:
+ *       type: object
+ *       required: [items, total, shippingAddress]
+ *       properties:
+ *         items:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               productId:
+ *                 type: string
+ *               quantity:
+ *                 type: integer
+ *               price:
+ *                 type: number
+ *         total:
+ *           type: number
+ *         shippingAddress:
+ *           type: object
+ *           properties:
+ *             street:
+ *               type: string
+ *             city:
+ *               type: string
+ *             country:
+ *               type: string
+ *             zipCode:
+ *               type: string
+ *     UpdateOrderInput:
+ *       type: object
+ *       properties:
+ *         status:
+ *           type: string
+ *           enum: [PENDING, PROCESSING, PAID, SHIPPED, DELIVERED, CANCELLED]
+ *     CreateCheckoutSessionInput:
+ *       type: object
+ *       required: [products]
+ *       properties:
+ *         products:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               productId:
+ *                 type: string
+ *               quantity:
+ *                 type: integer
+ */
+
+/**
+ * @swagger
+ * /api/auth/login:
  *   post:
  *     summary: Login to the system
  *     tags: [Auth]
@@ -31,7 +163,7 @@ router.post('/login', authRateLimiter, validate(loginSchema, 'body'), loginContr
 
 /**
  * @swagger
- * /auth/logout:
+ * /api/auth/logout:
  *   post:
  *     summary: Logout from the system
  *     tags: [Auth]
@@ -44,7 +176,7 @@ router.post('/login', authRateLimiter, validate(loginSchema, 'body'), loginContr
 router.post('/logout', authenticate, logoutController)
 /**
  * @swagger
- * /auth/register:
+ * /api/auth/register:
  *   post:
  *     summary: Register a new user
  *     tags: [Auth]
@@ -63,7 +195,7 @@ router.post('/logout', authenticate, logoutController)
 router.post('/register', authRateLimiter, validate(registerSchema, 'body'), registerController)
 /**
  * @swagger
- * /auth/refresh:
+ * /api/auth/refresh:
  *   post:
  *     summary: Refresh access token
  *     tags: [Auth]
@@ -85,7 +217,7 @@ router.post('/register', authRateLimiter, validate(registerSchema, 'body'), regi
 router.post('/refresh', apiRateLimiter, authenticate, refreshController)
 /**
  * @swagger
- * /auth/me:
+ * /api/auth/me:
  *   get:
  *     summary: Get current user profile
  *     tags: [Auth]
