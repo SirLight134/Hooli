@@ -19,6 +19,8 @@ import hpp from 'hpp';
 import { apiRateLimiter } from './middlewares/rateLimit.js';
 import sellerRoutes from './routes/seller.routes.js';
 import adminRoutes from './routes/admin.routes.js';
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./config/swagger.js";
 dbConnect();
 
 const app = express();
@@ -85,6 +87,13 @@ app.use('/api/stripe', stripeRoutes);
 app.use('/api/seller', sellerRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/upload', uploadRoutes);
+
+// ============================================
+// 6.5. Swagger API Docs (must come before SPA fallback)
+// ============================================
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.get("/api-docs.json", (req, res) => res.json(swaggerSpec));
+
 // ============================================
 // 7. SPA Fallback (must come after API routes, before 404)
 // ============================================
